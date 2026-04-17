@@ -1,5 +1,5 @@
 import random
-
+import os
 # Classes
 class Deck:
     def __init__(self, suit, rank, point):
@@ -35,8 +35,118 @@ def ifNotUsedCard(card1:object, used_cards:list):
             used_cards.append(card1)
 
     return verify
+
+def StraightFlush(cards:list):
+    cards2 = cards.copy()
+    strt_flsh = 0
+    i = 0
+    while i < len(cards2):
+        j = 0
+        while j < len(cards2) - 1:
+            if cards2[j].point > cards2[j+1].point:
+                temp = cards2[j]
+                cards2[j] = cards2[j+1]
+                cards2[j+1] = temp
+            j += 1
+        i += 1
+
+    for i in range(len(cards2)-1):
+        if (cards2[i].point - cards2[i+1].point) == -1 and cards2[i].suit == cards2[i+1].suit and strt_flsh < 4:
+            strt_flsh += 1
+        else:
+            strt_flsh = 0
+    
+    straightflush = False
+    if strt_flsh >= 4:
+        straightflush = True
+
+
+def Flush(cards:list):
+    suits = []
+    for card in cards:
+        suits.append(card.suit)
+
+    spade = suits.count('♠')
+    club = suits.count('♣')
+    diamond = suits.count('♦')
+    heart = suits.count('♥')
+
+    flush = False
+    if spade >= 5 or club >= 5 or diamond >= 5 or heart >= 5:
+        flush = True
+    
+def Straight(cards:list):
+    strt_count = 0
+    points = []
+    for card in cards:
+        points.append(card.point)
+
+    points.sort()
+
+    for i in range(len(cards) - 1):
+        if (points[i] - points[i+1]) == -1:
+            strt_count += 1
+        if (points[i] - points[i+1]) < -1 and strt_count < 4:
+            strt_count = 0
+        if (points[i] - points[i+1]) == 0 and strt_count < 4:
+            strt_count = 0
+    
+    straight = False
+    if strt_count >= 4:
+        straight = True
+
+def FullHouse(pair:bool, kindof3:bool):
+    fullhouse = False
+    if pair == True and kindof3 == True:
+        fullhouse = True
+    
+    return fullhouse
+
+def PairOfAKind(cards:list):
+    pair = []
+    kind3 = []
+    kind4 = []
+    taken = []
+    for card in cards:
+        taken.append(card.point)
+
+    for i in range(1, 14):
+        nth = taken.count(i)
+        if nth == 2:
+            pair.append(i)
+        elif nth == 3:
+            kind3.append(i)
+        elif nth == 4:
+            kind4.append(i)
+    
+    pair1 = False
+    pair2 = False
+    kindof3 = False
+    kindof4 = False
+    if len(pair) == 1: 
+        pair1 = True
+    if len(pair) == 2:
+        pair2 = True
+    if len(kind3) > 0: 
+        kindof3 = True
+    if len(kind4) > 0: 
+        kindof4 = True
+    
+    Fhouse = FullHouse(pair1, kindof3)
+
+    
+
+
+
+            
+
+
+        
+
+
 # Start
 # Card Deck
+os.system("cls")
 card_deck = []
 
 ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
@@ -101,7 +211,12 @@ while True:
         print(f"{card.suit}{card.rank}", end=' ')
     print("\n\nPlayer 1 Has: ")
     print(f"{players[0].card1.suit}{players[0].card1.rank}  {players[0].card2.suit}{players[0].card2.rank}")
+
+
     break
+
+for i in range(20):
+    print("")
 
 
     
