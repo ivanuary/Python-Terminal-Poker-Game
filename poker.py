@@ -12,7 +12,6 @@ class Player:
         self.card1 = card1
         self.card2 = card2
 
-
 # Functions
 def ifNotSameCard(card1:object, card2:object):
     if card1.suit == card2.suit and card1.rank == card2.rank:
@@ -36,6 +35,28 @@ def ifNotUsedCard(card1:object, used_cards:list):
 
     return verify
 
+def RoyalFlush(cards:list):
+    cards2 = cards.copy()
+    points = []
+    
+    for card in cards:
+        points.append(card.point)
+
+    royalflush = False
+    if all(need in points for need in(1,10,11,12,13)):
+        p1 = points.index(1)
+        p10 = points.index(10)
+        p11 = points.index(11)
+        p12 = points.index(12)
+        p13 = points.index(13)
+
+        if cards2[p1].suit == cards2[p10].suit == cards2[p11].suit == cards2[p12].suit == cards2[p13].suit:
+            royalflush = True
+            print("Royal Flush")
+    
+    return royalflush
+    
+
 def StraightFlush(cards:list):
     cards2 = cards.copy()
     strt_flsh = 0
@@ -53,12 +74,15 @@ def StraightFlush(cards:list):
     for i in range(len(cards2)-1):
         if (cards2[i].point - cards2[i+1].point) == -1 and cards2[i].suit == cards2[i+1].suit and strt_flsh < 4:
             strt_flsh += 1
-        else:
+        if (cards2[i].point - cards2[i+1].point) < -1:
             strt_flsh = 0
     
     straightflush = False
     if strt_flsh >= 4:
         straightflush = True
+        print("Straight Flush")
+    
+    return straightflush
 
 
 def Flush(cards:list):
@@ -74,6 +98,9 @@ def Flush(cards:list):
     flush = False
     if spade >= 5 or club >= 5 or diamond >= 5 or heart >= 5:
         flush = True
+        print("Flush")
+    
+    return flush
     
 def Straight(cards:list):
     strt_count = 0
@@ -88,18 +115,19 @@ def Straight(cards:list):
             strt_count += 1
         if (points[i] - points[i+1]) < -1 and strt_count < 4:
             strt_count = 0
-        if (points[i] - points[i+1]) == 0 and strt_count < 4:
-            strt_count = 0
     
     straight = False
     if strt_count >= 4:
         straight = True
+        print("Straight")
+    
+    return straight
 
 def FullHouse(pair:bool, kindof3:bool):
     fullhouse = False
     if pair == True and kindof3 == True:
         fullhouse = True
-    
+
     return fullhouse
 
 def PairOfAKind(cards:list):
@@ -125,24 +153,40 @@ def PairOfAKind(cards:list):
     kindof4 = False
     if len(pair) == 1: 
         pair1 = True
+        print("Pair")
     if len(pair) == 2:
         pair2 = True
+        print("Two Pair")
     if len(kind3) > 0: 
         kindof3 = True
+        print("3 Of a Kind")
     if len(kind4) > 0: 
         kindof4 = True
+        print("4 Of a Kind")
     
     Fhouse = FullHouse(pair1, kindof3)
-
+    if Fhouse == True:
+        print("Full House")
     
+    if Fhouse == True:
+        return 5
+    elif kind4 == True:
+        return 4
+    elif kind3 == True:
+        return 3
+    elif pair2 == True:
+        return 2
+    elif pair1 == True:
+        return 1
 
-
-
-            
-
-
-        
-
+# For Test
+test = [Deck('♠', '1', 1),
+        Deck('♠', '10', 10),
+        Deck('♠', 'J', 11),
+        Deck('♠', 'K', 13),
+        Deck('♠', 'Q', 12),
+        Deck('♠', '4', 4),
+        Deck('♠', '5', 5)]
 
 # Start
 # Card Deck
@@ -192,7 +236,6 @@ for i in range(5):
 p1 = []
 p2 = []
 
-
 # Add Cards to a list to be checked later
 p1.append(players[0].card1)
 p1.append(players[0].card2)
@@ -212,11 +255,14 @@ while True:
     print("\n\nPlayer 1 Has: ")
     print(f"{players[0].card1.suit}{players[0].card1.rank}  {players[0].card2.suit}{players[0].card2.rank}")
 
+    nthpair = PairOfAKind(p1)
+    straight = Straight(p1)
+    flush = Flush(p1)
+    straightflush = StraightFlush(p1)
+    royalflush = RoyalFlush(p1)
 
-    break
 
-for i in range(20):
-    print("")
+
 
 
     
