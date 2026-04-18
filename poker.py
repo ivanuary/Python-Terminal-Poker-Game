@@ -52,7 +52,6 @@ def RoyalFlush(cards:list):
 
         if cards2[p1].suit == cards2[p10].suit == cards2[p11].suit == cards2[p12].suit == cards2[p13].suit:
             royalflush = True
-            print("Royal Flush")
     
     return royalflush
     
@@ -80,7 +79,6 @@ def StraightFlush(cards:list):
     straightflush = False
     if strt_flsh >= 4:
         straightflush = True
-        print("Straight Flush")
     
     return straightflush
 
@@ -98,7 +96,6 @@ def Flush(cards:list):
     flush = False
     if spade >= 5 or club >= 5 or diamond >= 5 or heart >= 5:
         flush = True
-        print("Flush")
     
     return flush
     
@@ -119,7 +116,6 @@ def Straight(cards:list):
     straight = False
     if strt_count >= 4:
         straight = True
-        print("Straight")
     
     return straight
 
@@ -153,31 +149,61 @@ def PairOfAKind(cards:list):
     kindof4 = False
     if len(pair) == 1: 
         pair1 = True
-        print("Pair")
-    if len(pair) == 2:
+    if len(pair) > 1:
         pair2 = True
-        print("Two Pair")
     if len(kind3) > 0: 
         kindof3 = True
-        print("3 Of a Kind")
     if len(kind4) > 0: 
         kindof4 = True
-        print("4 Of a Kind")
-    
+
     Fhouse = FullHouse(pair1, kindof3)
-    if Fhouse == True:
-        print("Full House")
     
     if Fhouse == True:
         return 5
-    elif kind4 == True:
+    elif kindof4 == True:
         return 4
-    elif kind3 == True:
+    elif kindof3 == True:
         return 3
     elif pair2 == True:
         return 2
     elif pair1 == True:
         return 1
+    else:
+        return 0
+
+def Interpret(nthpair:int, straight:bool, flush:bool, straightflush:bool, royalflush:bool):
+    if royalflush == True:
+        print("Royal Flush!")
+        return 9
+    elif straightflush == True:
+        print("Straight Flush!")
+        return 8
+    elif nthpair == 4:
+        print("4 of a Kind!")
+        return 7
+    elif nthpair == 5:
+        print("Full House!")
+        return 6
+    elif flush == True:
+        print("Flush!")
+        return 5
+    elif straight == True:
+        print("Straight!")
+        return 4
+    elif nthpair == 3:
+        print("3 of a Kind")
+        return 3
+    elif nthpair == 2:
+        print("Two Pair!")
+        return 2
+    elif nthpair == 1:
+        print("One Pair!")
+        return 1
+    else:
+        print("High Card!")
+        return 0
+
+
 
 # For Test
 test = [Deck('♠', '1', 1),
@@ -260,6 +286,30 @@ while True:
     flush = Flush(p1)
     straightflush = StraightFlush(p1)
     royalflush = RoyalFlush(p1)
+
+    p1score = Interpret(nthpair, straight, flush, straightflush, royalflush)
+
+    print("\n\nPlayer 2 Has: ")
+    print(f"{players[1].card1.suit}{players[1].card1.rank}  {players[1].card2.suit}{players[1].card2.rank}")
+
+    nthpair2 = PairOfAKind(p2)
+    straight2 = Straight(p2)
+    flush2 = Flush(p2)
+    straightflush2 = StraightFlush(p2)
+    royalflush2 = RoyalFlush(p2)
+
+    p2score = Interpret(nthpair2, straight2, flush2, straightflush2, royalflush2)
+    break
+
+print("\n")
+if p1score > p2score:
+    print("P1 Wins!")
+elif p2score > p1score:
+    print("P2 Wins!")
+else:
+    print("Both Hands are Tied")
+
+
 
 
 
