@@ -3,6 +3,9 @@
 - I also did this to practice python since I am way too used in C logic
 - Texas Hold'em Version of Poker
 
+Dev Vlog Link:
+https://youtu.be/hU27t_m9fJk?si=02LwqMj7rR4qO0K1
+
 Accomplished (4/19/2026):
 - Every poker hand has their own function, and returns a value equivalent to the rank of the hand
 - Compared between player 1 and player 2's cards on who has the stronger hand
